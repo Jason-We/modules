@@ -1,4 +1,4 @@
 ## modules
 some common modules in dev use
-### dignin
+### signin
 commom sign in and register ops generated for dev use
