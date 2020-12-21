@@ -6,41 +6,41 @@ spring:
   devtools:
     restart:
       enabled: true
-      # ÏÂÃæÕâÁ½¸ö²ÎÊı ½â¾öÁËÈÈ²¿Êğºó½Ó¿Úµ÷ÓÃÊ§°Ü404µÄÎÊÌâ
+      # ä¸‹é¢è¿™ä¸¤ä¸ªå‚æ•° è§£å†³äº†çƒ­éƒ¨ç½²åæ¥å£è°ƒç”¨å¤±è´¥404çš„é—®é¢˜
       poll-interval: 3000ms
       quiet-period: 2999ms
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/modules_proj?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8    #ÕâÀïserverTimezone±ØĞëÅäÖÃ£¬·ñÔò±¨´í
+    url: jdbc:mysql://127.0.0.1:3306/modules_proj?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8    #è¿™é‡ŒserverTimezoneå¿…é¡»é…ç½®ï¼Œå¦åˆ™æŠ¥é”™
     username: ENC(ijJa/eUVOk3i4TzdvbmlaQ==)
     password: ENC(RrPBXq12G2ocW75507sYaA==)
-    ###################ÒÔÏÂÎªdruidÔö¼ÓµÄÅäÖÃ###########################
+    ###################ä»¥ä¸‹ä¸ºdruidå¢åŠ çš„é…ç½®###########################
     type: com.alibaba.druid.pool.DruidDataSource
-    # ÏÂÃæÎªÁ¬½Ó³ØµÄ²¹³äÉèÖÃ£¬Ó¦ÓÃµ½ÉÏÃæËùÓĞÊı¾İÔ´ÖĞ
-    # ³õÊ¼»¯´óĞ¡£¬×îĞ¡£¬×î´ó
+    # ä¸‹é¢ä¸ºè¿æ¥æ± çš„è¡¥å……è®¾ç½®ï¼Œåº”ç”¨åˆ°ä¸Šé¢æ‰€æœ‰æ•°æ®æºä¸­
+    # åˆå§‹åŒ–å¤§å°ï¼Œæœ€å°ï¼Œæœ€å¤§
     initialSize: 5
     minIdle: 5
     maxActive: 20
-    # ÅäÖÃ»ñÈ¡Á¬½ÓµÈ´ı³¬Ê±µÄÊ±¼ä
+    # é…ç½®è·å–è¿æ¥ç­‰å¾…è¶…æ—¶çš„æ—¶é—´
     maxWait: 60000
-    # ÅäÖÃ¼ä¸ô¶à¾Ã²Å½øĞĞÒ»´Î¼ì²â£¬¼ì²âĞèÒª¹Ø±ÕµÄ¿ÕÏĞÁ¬½Ó£¬µ¥Î»ÊÇºÁÃë
+    # é…ç½®é—´éš”å¤šä¹…æ‰è¿›è¡Œä¸€æ¬¡æ£€æµ‹ï¼Œæ£€æµ‹éœ€è¦å…³é—­çš„ç©ºé—²è¿æ¥ï¼Œå•ä½æ˜¯æ¯«ç§’
     timeBetweenEvictionRunsMillis: 60000
-    # ÅäÖÃÒ»¸öÁ¬½ÓÔÚ³ØÖĞ×îĞ¡Éú´æµÄÊ±¼ä£¬µ¥Î»ÊÇºÁÃë
+    # é…ç½®ä¸€ä¸ªè¿æ¥åœ¨æ± ä¸­æœ€å°ç”Ÿå­˜çš„æ—¶é—´ï¼Œå•ä½æ˜¯æ¯«ç§’
     minEvictableIdleTimeMillis: 300000
     validationQuery: SELECT 1 FROM DUAL
     testWhileIdle: true
     testOnBorrow: false
     testOnReturn: false
-    # ´ò¿ªPSCache£¬²¢ÇÒÖ¸¶¨Ã¿¸öÁ¬½ÓÉÏPSCacheµÄ´óĞ¡
+    # æ‰“å¼€PSCacheï¼Œå¹¶ä¸”æŒ‡å®šæ¯ä¸ªè¿æ¥ä¸ŠPSCacheçš„å¤§å°
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
-    # ÅäÖÃ¼à¿ØÍ³¼ÆÀ¹½ØµÄfilters£¬È¥µôºó¼à¿Ø½çÃæsqlÎŞ·¨Í³¼Æ£¬'wall'ÓÃÓÚ·À»ğÇ½£¬´Ë´¦ÊÇfilterĞŞ¸ÄµÄµØ·½
+    # é…ç½®ç›‘æ§ç»Ÿè®¡æ‹¦æˆªçš„filtersï¼Œå»æ‰åç›‘æ§ç•Œé¢sqlæ— æ³•ç»Ÿè®¡ï¼Œ'wall'ç”¨äºé˜²ç«å¢™ï¼Œæ­¤å¤„æ˜¯filterä¿®æ”¹çš„åœ°æ–¹
     filters:
       commons-log.connection-logger-name: stat,wall,log4j
-    # Í¨¹ıconnectPropertiesÊôĞÔÀ´´ò¿ªmergeSql¹¦ÄÜ£»ÂıSQL¼ÇÂ¼
+    # é€šè¿‡connectPropertieså±æ€§æ¥æ‰“å¼€mergeSqlåŠŸèƒ½ï¼›æ…¢SQLè®°å½•
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-    # ºÏ²¢¶à¸öDruidDataSourceµÄ¼à¿ØÊı¾İ
+    # åˆå¹¶å¤šä¸ªDruidDataSourceçš„ç›‘æ§æ•°æ®
     useGlobalDataSourceStat: true
-# ¼ÓÃÜ¹¤¾ßÅäÖÃÃÜÔ¿
+# åŠ å¯†å·¥å…·é…ç½®å¯†é’¥
 jasypt:
   encryptor:
     password: jasonwe
