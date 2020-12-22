@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <!-- 文件输出格式 -->
+
+    <property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />
+
+
+    <!-- 生产环境 日志文件路径  一般为linux服务器 -->
+
+    <property name="PRO_FILE_PATH" value="/opt/share/logs" />
+
+
+
+    <!-- 每天产生一个文件 -->
+
+<!--    <appender name="LOG-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        &lt;!&ndash;<Prudent>true</Prudent>&ndash;&gt;
+
+        &lt;!&ndash; 文件路径 &ndash;&gt;
+
+        &lt;!&ndash;<file>${logging.path}</file>&ndash;&gt;
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            &lt;!&ndash; 文件名称 这里默认直接在项目文件夹下创建devLogs目录， 并生成info.xxxx日志文件&ndash;&gt;
+
+            <fileNamePattern>devLogs/info.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+        </rollingPolicy>
+
+
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+
+            <pattern>${PATTERN}</pattern>
+
+        </layout>
+
+    </appender>-->
+
+
+
+
+
+    <!-- 开发环境 -->
+
+    <springProfile name="dev">
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+
+            <!--<Prudent>true</Prudent>-->
+
+            <encoder>
+
+                <pattern>${PATTERN}</pattern>
+
+            </encoder>
+
+        </appender>
+
+        <root level="info">
+
+            <appender-ref ref="CONSOLE" />
+
+        </root>
+
+    </springProfile>
+
+
+    <!-- 生产环境 -->
+
+    <springProfile name="prod">
+
+        <appender name="PROD_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+            <!--<Prudent>true</Prudent>-->
+
+            <!--<file>${PRO_FILE_PATH}</file>-->
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+                <fileNamePattern>${PRO_FILE_PATH}/warn.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            </rollingPolicy>
+
+            <layout class="ch.qos.logback.classic.PatternLayout">
+
+                <pattern>${PATTERN}</pattern>
+
+            </layout>
+
+        </appender>
+
+
+
+        <root level="warn">
+
+            <appender-ref ref="PROD_FILE" />
+
+        </root>
+
+    </springProfile>
+
+</configuration>
