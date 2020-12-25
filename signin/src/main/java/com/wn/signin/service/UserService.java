@@ -24,4 +24,29 @@ public class UserService implements UserMapper {
     public List<User> getAllUser() {
         return userMapper.getAllUser();
     }
+
+    @Override
+    public int addUser(User user) {
+        return userMapper.addUser(user);
+    }
+
+    @Override
+    public User getUserByPhone(String phone) {
+        return userMapper.getUserByPhone(phone);
+    }
+
+    @Override
+    public User getUserByMail(String mail) {
+        return userMapper.getUserByMail(mail);
+    }
+
+    @Override
+    public String getPassByPhone(String phone) {
+        return userMapper.getPassByPhone(phone);
+    }
+
+    @Override
+    public String getPassByMail(String mail) {
+        return userMapper.getPassByMail(mail);
+    }
 }

@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: dev
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    username: 1154844946@qq.com
+    password: uxfpbyqafplufeid
 server:
   tomcat:
     uri-encoding: UTF-8
