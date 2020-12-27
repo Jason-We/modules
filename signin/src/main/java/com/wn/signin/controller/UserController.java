@@ -1,5 +1,6 @@
 package com.wn.signin.controller;
 
+import cn.hutool.json.JSONObject;
 import com.wn.signin.common.RespCode;
 import com.wn.signin.common.RespResult;
 import com.wn.signin.entity.User;
@@ -10,6 +11,7 @@ import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,13 +27,13 @@ import java.util.Objects;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ResultHandler resultHandler;
+    private ResultHandler resultHandler;
 
     @Autowired
-    StringEncryptor stringEncryptor;
+    private StringEncryptor stringEncryptor;
 
     @GetMapping(value = "/getAllUser" , produces = "application/json;charset=utf-8")
     public RespResult getAllUser(){
@@ -45,7 +47,7 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/regis" ,produces = "application/json;charset=utf-8")
+    @PostMapping(value = "/register" ,produces = "application/json;charset=utf-8")
     public RespResult regisUser(@RequestBody User user){
         User u;
         if(user.getPhone() == null){
@@ -59,12 +61,50 @@ public class UserController {
             String passEncode = stringEncryptor.encrypt(user.getPassword());
             user.setPassword(passEncode);
             if(userService.addUser(user) == 1){
-                return resultHandler.handleResult(RespCode.SUCCESS,null);
+                return resultHandler.handleResult(RespCode.SUCCESS,"注册成功",null);
             }else{
                 return resultHandler.handleResult(RespCode.FAIL,"注册用户失败",user);
             }
         }
     }
+
+    @GetMapping(value = "/regis" ,produces = "application/json;charset=utf-8")
+    public RespResult regis(@RequestParam("regType")String regType, @RequestParam("regNum")String regNum,@RequestParam("code")String code,
+                            @RequestParam("nickname")String nickname, @RequestParam("password")String password, HttpServletRequest request){
+        User u;
+        JSONObject object = (JSONObject) request.getSession().getAttribute("mailCodeVerify");
+
+        if(regType.equals("mail")){
+            u = userService.getUserByMail(regNum);
+        }else{
+            u = userService.getUserByPhone(regNum);
+        }
+        if(Objects.nonNull(u)){
+            return resultHandler.handleResult(RespCode.FAIL,"此号已被注册",regNum);
+        }else if(regType.equals("mail") && !object.getStr("mailNo").equals(regNum)){
+            return resultHandler.handleResult(RespCode.FAIL,"邮箱号错误",regNum);
+        }else if(!code.equals(object.getStr("mailCode"))){
+            return resultHandler.handleResult(RespCode.FAIL,"验证码错误",code);
+        }else if((System.currentTimeMillis()-object.getLong("ctime")) > 30*60*1000){
+            return resultHandler.handleResult(RespCode.FAIL,"验证码已过期",code);
+        }else{
+            String passEncode = stringEncryptor.encrypt(password);
+            User user = new User();
+            user.setNickname(nickname);
+            if(regType.equals("mail")){
+                user.setMail(regNum);
+            }else{
+                user.setPhone(regNum);
+            }
+            user.setPassword(passEncode);
+            if(userService.addUser(user) == 1){
+                return resultHandler.handleResult(RespCode.SUCCESS,"注册成功",null);
+            }else{
+                return resultHandler.handleResult(RespCode.FAIL,"注册用户失败",user);
+            }
+        }
+    }
+
 
     @PostMapping(value = "/login" ,produces = "application/json;charset=utf-8")
     public RespResult loginByPassword(@RequestBody User user){

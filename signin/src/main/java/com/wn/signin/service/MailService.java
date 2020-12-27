@@ -35,15 +35,16 @@ public class MailService {
         log.info("消息已发送");
     }
 
-    public void sendVertifyCode(String to){
+    public String sendVertifyCode(String to){
         SimpleMailMessage message = new SimpleMailMessage();
         String rc = getRandomCode(6);
         message.setFrom(from);
         message.setTo(to);
         message.setSubject("您好，"+to + ":\n");
-        message.setText("您最近申请了邮箱验证，您的验证码是： "+rc+ "\n 此验证码30分钟内有效。");
+        message.setText("您最近申请了邮箱验证，您的验证码是："+rc+ "\n此验证码30分钟内有效,请勿泄露给其他人。");
         mailSender.send(message);
-        log.warn("验证码: {} 已发送",rc);
+        log.warn("已向 {} 发送验证码: {}",to,rc);
+        return rc;
     }
 
 
