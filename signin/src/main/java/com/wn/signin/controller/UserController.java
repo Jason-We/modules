@@ -72,21 +72,20 @@ public class UserController {
     public RespResult regis(@RequestParam("regType")String regType, @RequestParam("regNum")String regNum,@RequestParam("code")String code,
                             @RequestParam("nickname")String nickname, @RequestParam("password")String password, HttpServletRequest request){
         User u;
-        JSONObject object = (JSONObject) request.getSession().getAttribute("mailCodeVerify");
-
+        JSONObject object = (JSONObject) request.getSession().getAttribute("mailCodeVerify"+regNum);
         if(regType.equals("mail")){
             u = userService.getUserByMail(regNum);
         }else{
             u = userService.getUserByPhone(regNum);
         }
         if(Objects.nonNull(u)){
-            return resultHandler.handleResult(RespCode.FAIL,"此号已被注册",regNum);
+            return resultHandler.handleResult(RespCode.FAIL,"此号已被注册,去登陆?",regNum);
+        }else if(Objects.isNull(object)){
+            return resultHandler.handleResult(RespCode.FAIL,"验证码已过期",code);
         }else if(regType.equals("mail") && !object.getStr("mailNo").equals(regNum)){
             return resultHandler.handleResult(RespCode.FAIL,"邮箱号错误",regNum);
         }else if(!code.equals(object.getStr("mailCode"))){
             return resultHandler.handleResult(RespCode.FAIL,"验证码错误",code);
-        }else if((System.currentTimeMillis()-object.getLong("ctime")) > 30*60*1000){
-            return resultHandler.handleResult(RespCode.FAIL,"验证码已过期",code);
         }else{
             String passEncode = stringEncryptor.encrypt(password);
             User user = new User();
