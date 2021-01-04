@@ -40,6 +40,6 @@ public class MailController {
         object.set("mailNo",mailNo);
         request.getSession().setAttribute("mailCodeVerify"+mailNo,object);
         log.warn("session :{}", request.getSession().getAttribute("mailCodeVerify"+mailNo).toString());
-        return resultHandler.handleResult(RespCode.SUCCESS,"验证码已发送",null);
+        return resultHandler.handleResult(RespCode.SUCCESS,"验证码已发送",code);
     }
 }

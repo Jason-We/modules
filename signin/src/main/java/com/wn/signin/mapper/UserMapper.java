@@ -3,6 +3,7 @@ package com.wn.signin.mapper;
 import com.wn.signin.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -31,6 +32,13 @@ public interface UserMapper {
 
     @Select("select password from muser where mail = #{mail}")
     String getPassByMail(String mail);
+
+    @Update("update muser set password = #{pass} where phone = #{phone}")
+    int updatePassByPhone(String pass,String phone);
+
+    @Update("update muser set password = #{pass} where mail = #{mail}")
+    int updatePassByMail(String pass,String mail);
+
 
 
 

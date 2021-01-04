@@ -79,7 +79,7 @@ public class UserController {
             u = userService.getUserByPhone(regNum);
         }
         if(Objects.nonNull(u)){
-            return resultHandler.handleResult(RespCode.FAIL,"此号已被注册,去登陆?",regNum);
+            return resultHandler.handleResult(RespCode.FAIL,"此号已被注册",regNum);
         }else if(Objects.isNull(object)){
             return resultHandler.handleResult(RespCode.FAIL,"验证码已过期",code);
         }else if(regType.equals("mail") && !object.getStr("mailNo").equals(regNum)){
@@ -122,6 +122,24 @@ public class UserController {
             }else{
                 return resultHandler.handleResult(RespCode.FAIL,"密码错误",user);
             }
+        }
+    }
+
+    @GetMapping(value = "/resetPass" , produces = "application/json;charset=utf-8")
+    public RespResult resetPass(@RequestParam("pheormal")String pheormal,@RequestParam("newPass")String newPass){
+        int ret = -1;
+        log.warn("pheormal:{} , newPass : {} ",pheormal,newPass);
+        String pwdEncode  = stringEncryptor.encrypt(newPass);
+        if(pheormal.indexOf('@') != -1){
+            ret = userService.updatePassByMail(pwdEncode,pheormal);
+        }else {
+            ret = userService.updatePassByPhone(pwdEncode,pheormal);
+        }
+        log.warn("ret : {}",ret);
+        if(ret == 1 ){
+            return resultHandler.handleResult(RespCode.SUCCESS,"修改成功",null);
+        }else {
+            return resultHandler.handleResult(RespCode.FAIL,"修改失败",newPass);
         }
     }
 

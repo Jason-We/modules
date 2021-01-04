@@ -49,4 +49,14 @@ public class UserService implements UserMapper {
     public String getPassByMail(String mail) {
         return userMapper.getPassByMail(mail);
     }
+
+    @Override
+    public int updatePassByPhone(String pass, String phone) {
+        return userMapper.updatePassByPhone(pass,phone);
+    }
+
+    @Override
+    public int updatePassByMail(String pass, String mail) {
+        return userMapper.updatePassByMail(pass,mail);
+    }
 }
